@@ -6,6 +6,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <set>
 #include <sstream>
 #include <vector>
 
@@ -18,12 +19,15 @@
 namespace Commander {
 
 class Command : public Descriptable {
+private:
+  std::set<Option *> self_stored_options;
+
 protected:
   // members
   std::map<std::string const, Command *> *subcommands;
   std::string label;
   std::vector<PositionalArgument> *positional_arguments;
-  std::vector<Option> options;
+  std::vector<Option *> options;
 
   Command *parent = nullptr;
 
@@ -60,8 +64,8 @@ public:
   Option const *get_global_option(const std::string &) const;
   Option const *get_global_option(int) const;
   int get_global_option_size() const;
-  std::vector<Option> const *get_options() const;
-  std::vector<Option> *get_options();
+  std::vector<Option *> const *get_options() const;
+  std::vector<Option *> *get_options();
 
   // setters
   Command *set_description(std::string const &description);
@@ -72,7 +76,7 @@ public:
   Command *add_positional(PositionalArgument &);
   Command *add_option(std::string const &);
   Command *add_option(std::string const &, std::string const &);
-  Command *add_option(Option &);
+  Command *add_option(Option *);
   Command *add(std::string const &);
   Command *add(std::string const &, std::string const &);
   Command *add_subcommand(std::string const &, Command *);

@@ -38,10 +38,10 @@ public:
   PositionalArgument const *get_value(int i) const;
   PositionalArgument *get_value(int i);
   bool has_name(std::string const &) const;
-  std::string get_label() const;
-  const bool has_appeared() const;
+  virtual std::string get_label() const;
+  virtual const bool has_appeared() const;
 
-  Option *parse_argument_list(ArgumentList *);
+  virtual Option *parse_argument_list(ArgumentList *);
 
   static bool is_option_label(std::string const &);
 };

@@ -6,6 +6,9 @@ Command::Command(std::string const &description) : Descriptable(description) {
   this->create_wrapper();
 };
 Command::~Command() {
+  std::for_each(this->self_stored_options.begin(),
+                this->self_stored_options.end(),
+                [&](Option *it) { delete it; });
   std::for_each(this->subcommands->begin(), this->subcommands->end(),
                 [&](auto it) { delete it.second; });
   delete this->subcommands;
@@ -46,18 +49,20 @@ Command *Command::add_positional(std::string const &label,
   return this->add_positional(positional_argument);
 };
 
-Command *Command::add_option(Option &option) {
+Command *Command::add_option(Option *option) {
   this->get_options()->push_back(option);
   return this;
 };
 
 Command *Command::add_option(std::string const &label) {
-  auto option = Option(label);
+  auto option = new Option(label);
+  this->self_stored_options.insert(option);
   return this->add_option(option);
 };
 Command *Command::add_option(std::string const &label,
                              std::string const &description) {
-  auto option = Option(label, description);
+  auto option = new Option(label, description);
+  this->self_stored_options.insert(option);
   return this->add_option(option);
 };
 
