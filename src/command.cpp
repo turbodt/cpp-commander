@@ -45,10 +45,77 @@ PositionalArgument const *Command::get_positional(int i) const {
 }
 
 std::vector<PositionalArgument> Command::get_positionals() const {
-  auto positional_arguments = std::vector(this->positional_arguments->begin(),
-                                          this->positional_arguments->end());
+  auto positional_arguments = std::vector<PositionalArgument>(
+      this->positional_arguments->begin(), this->positional_arguments->end());
   return positional_arguments;
 };
+
+bool Command::has_option(const std::string &name) const {
+  for (auto &option : *this->get_options()) {
+    if (option.has_name(name)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+Option const *Command::get_option(const std::string &name) const {
+  for (auto &option : *this->get_options()) {
+    if (option.has_name(name)) {
+      return &option;
+    }
+  }
+  throw NotFoundException("Option with name `" + name + "` was not found.");
+};
+
+Option const *Command::get_option(int index) const {
+  return &this->get_options()->at(index);
+}
+
+Option *Command::get_option(const std::string &name) {
+  for (auto &option : *this->get_options()) {
+    if (option.has_name(name)) {
+      return &option;
+    }
+  }
+  throw NotFoundException("Option with name `" + name + "` was not found.");
+};
+
+Option const *Command::get_global_option(const std::string &name) const {
+  if (this->has_option(name)) {
+    return this->get_option(name);
+  }
+  if (this->has_parent()) {
+    return this->get_parent()->get_global_option(name);
+  }
+  throw NotFoundException("Option with name `" + name +
+                          "` was not globally found.");
+};
+
+Option const *Command::get_global_option(int index) const {
+  int offset = 0;
+  if (this->has_parent()) {
+    offset += this->get_parent()->get_global_option_size();
+    if (index < offset) {
+      return this->get_parent()->get_global_option(index);
+    }
+  }
+  return this->get_option(index - offset);
+};
+
+int Command::get_global_option_size() const {
+  int size = this->get_options()->size();
+  if (this->has_parent()) {
+    size += this->get_parent()->get_global_option_size();
+  }
+  return size;
+};
+
+std::vector<Option> const *Command::get_options() const {
+  return &this->options;
+}
+
+std::vector<Option> *Command::get_options() { return &this->options; }
 
 // setters
 Command *Command::set_description(std::string const &description) {
@@ -84,6 +151,43 @@ Command *Command::add_positional(std::string const &label,
   return this->add_positional(positional_argument);
 };
 
+Command *Command::add_option(Option &option) {
+  this->get_options()->push_back(option);
+  return this;
+};
+
+Command *Command::add_option(std::string const &label) {
+  auto option = Option(label);
+  return this->add_option(option);
+};
+Command *Command::add_option(std::string const &label,
+                             std::string const &description) {
+  auto option = Option(label, description);
+  return this->add_option(option);
+};
+
+Command *Command::add(std::string const &label) {
+  if (Option::is_option_label(label)) {
+    return this->add_option(label);
+  } else if (PositionalArgument::is_positional_argument_label(label)) {
+    return this->add_positional(label);
+  }
+  throw InvalidLabelException(
+      "Label `" + label +
+      "` is neither a valid positional argument or option label.");
+};
+Command *Command::add(std::string const &label,
+                      std::string const &description) {
+  if (Option::is_option_label(label)) {
+    return this->add_option(label, description);
+  } else if (PositionalArgument::is_positional_argument_label(label)) {
+    return this->add_positional(label, description);
+  }
+  throw InvalidLabelException(
+      "Label `" + label +
+      "` is neither a valid positional argument or option label.");
+};
+
 Command *Command::add_subcommand(std::string const &name, Command *subcommand) {
   if (this->positional_arguments->size() &&
       this->positional_arguments->back().is_optional()) {
@@ -96,9 +200,18 @@ Command *Command::add_subcommand(std::string const &name, Command *subcommand) {
       std::pair<std::string const, Command *>(name, subcommand));
   return this;
 };
+Command *Command::add(std::string const &name, Command *subcommand) {
+  return this->add_subcommand(name, subcommand);
+}
 
 // utils
-void Command::parse_option(ArgumentList *list) { list->next(); }
+void Command::parse_option(ArgumentList *list) {
+  if (this->has_option(list->get_current())) {
+    this->get_option(list->get_current())->parse_argument_list(list);
+  } else {
+    list->next();
+  }
+}
 
 void Command::parse_positional(int index, ArgumentList *list) { list->next(); }
 

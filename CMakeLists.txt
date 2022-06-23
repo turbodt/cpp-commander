@@ -20,6 +20,7 @@ target_sources(${PROJECT_NAME}
     src/command.lifecycle.cpp
     src/argument-list.cpp
     src/descriptable.cpp
+    src/option.cpp
     src/positional-argument.cpp
 )
 

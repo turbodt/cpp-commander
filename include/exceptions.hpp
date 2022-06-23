@@ -17,6 +17,20 @@ public:
   void update_message(const std::string &message) { this->message = message; }
 };
 
+class NotFoundException : public UnknownException {
+public:
+  explicit NotFoundException() : UnknownException(){};
+  explicit NotFoundException(const std::string &message)
+      : UnknownException(message){};
+};
+
+class InvalidLabelException : public UnknownException {
+public:
+  explicit InvalidLabelException() : UnknownException(){};
+  explicit InvalidLabelException(const std::string &message)
+      : UnknownException(message){};
+};
+
 class InvalidAdditionException : public UnknownException {
 public:
   explicit InvalidAdditionException() : UnknownException(){};
@@ -28,6 +42,20 @@ class InvalidPositionalArgumentsNumberException : public UnknownException {
 public:
   explicit InvalidPositionalArgumentsNumberException() : UnknownException(){};
   explicit InvalidPositionalArgumentsNumberException(const std::string &message)
+      : UnknownException(message){};
+};
+
+class InvalidOptionLabelException : public InvalidLabelException {
+public:
+  explicit InvalidOptionLabelException() : InvalidLabelException(){};
+  explicit InvalidOptionLabelException(const std::string &message)
+      : InvalidLabelException(message){};
+};
+
+class OptionParsingException : public UnknownException {
+public:
+  explicit OptionParsingException() : UnknownException(){};
+  explicit OptionParsingException(const std::string &message)
       : UnknownException(message){};
 };
 } // namespace Commander
