@@ -31,9 +31,9 @@ protected:
   std::string get_help() const;
 
   // life cycle
-  Command *create_wrapper();
-  Command *initialize_wrapper();
-  int execute_wrapper(ArgumentList *) const;
+  virtual Command *create_wrapper();
+  virtual Command *initialize_wrapper();
+  virtual int execute_wrapper(ArgumentList *) const;
 
   int parse_arguments_and_execute(ArgumentList *);
 
@@ -48,7 +48,9 @@ public:
   Command const *get_parent() const;
   int get_global_positionals_size() const;
   int get_positionals_size() const;
+  PositionalArgument const *get_global_positional(std::string const &) const;
   PositionalArgument const *get_global_positional(int) const;
+  PositionalArgument const *get_positional(std::string const &) const;
   PositionalArgument const *get_positional(int) const;
   std::vector<PositionalArgument> get_positionals() const;
   bool has_option(const std::string &) const;

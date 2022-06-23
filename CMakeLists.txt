@@ -16,6 +16,7 @@ add_library(${PROJECT_NAME} STATIC)
 target_sources(${PROJECT_NAME}
     PRIVATE
     src/command.cpp
+    src/command.getters.cpp
     src/command.get-help.cpp
     src/command.lifecycle.cpp
     src/argument-list.cpp

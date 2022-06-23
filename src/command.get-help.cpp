@@ -62,7 +62,9 @@ std::string Command::get_help() const {
   }
 
   // description
-  ss << "\n\n" << this->description;
+  if (this->get_description().size()) {
+    ss << "\n\n" << this->get_description();
+  }
 
   int max_entry_size = 0;
 
