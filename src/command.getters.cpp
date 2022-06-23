@@ -63,7 +63,7 @@ std::vector<PositionalArgument> Command::get_positionals() const {
 
 bool Command::has_option(const std::string &name) const {
   for (auto &option : *this->get_options()) {
-    if (option.has_name(name)) {
+    if (option->has_name(name)) {
       return true;
     }
   }
@@ -72,21 +72,21 @@ bool Command::has_option(const std::string &name) const {
 
 Option const *Command::get_option(const std::string &name) const {
   for (auto &option : *this->get_options()) {
-    if (option.has_name(name)) {
-      return &option;
+    if (option->has_name(name)) {
+      return option;
     }
   }
   throw NotFoundException("Option with name `" + name + "` was not found.");
 };
 
 Option const *Command::get_option(int index) const {
-  return &this->get_options()->at(index);
+  return this->get_options()->at(index);
 }
 
 Option *Command::get_option(const std::string &name) {
   for (auto &option : *this->get_options()) {
-    if (option.has_name(name)) {
-      return &option;
+    if (option->has_name(name)) {
+      return option;
     }
   }
   throw NotFoundException("Option with name `" + name + "` was not found.");
@@ -122,10 +122,10 @@ int Command::get_global_option_size() const {
   return size;
 };
 
-std::vector<Option> const *Command::get_options() const {
+std::vector<Option *> const *Command::get_options() const {
   return &this->options;
 }
 
-std::vector<Option> *Command::get_options() { return &this->options; }
+std::vector<Option *> *Command::get_options() { return &this->options; }
 
 } // namespace Commander

@@ -36,11 +36,11 @@ int get_positional_arguments_name_max_width(
   return max_size;
 }
 
-int get_options_name_max_width(std::vector<Option> const *options) {
+int get_options_name_max_width(std::vector<Option *> const *options) {
   int max_size = 0;
   std::for_each(options->cbegin(), options->cend(), [&](auto option) {
-    if (max_size < option.get_label().size()) {
-      max_size = option.get_label().size();
+    if (max_size < option->get_label().size()) {
+      max_size = option->get_label().size();
     }
   });
   return max_size;
@@ -114,9 +114,9 @@ std::string Command::get_help() const {
     std::for_each(this->get_options()->begin(), this->get_options()->end(),
                   [&](auto option) {
                     ss << "\n  " << std::setfill(' ')
-                       << std::setw(max_entry_size) << option.get_label();
+                       << std::setw(max_entry_size) << option->get_label();
 
-                    std::stringstream description_ss(option.get_description());
+                    std::stringstream description_ss(option->get_description());
                     std::string line;
                     for (int i = 0; std::getline(description_ss, line); i++) {
                       if (i) {
