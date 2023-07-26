@@ -92,6 +92,8 @@ protected:
 
     int parse_arguments_and_execute(ArgumentList *);
 
+    bool has_been_initializated = false;
+
 private:
     std::set<Option *> self_stored_options;
 

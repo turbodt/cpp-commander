@@ -14,7 +14,10 @@ void Command::create() {}
 
 // Initialization
 Command *Command::initialize_wrapper() {
-    this->initialize();
+    if (!this->has_been_initializated) {
+        this->has_been_initializated = true;
+        this->initialize();
+    }
     std::for_each(
         this->subcommands->begin(),
         this->subcommands->end(),
