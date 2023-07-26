@@ -37,12 +37,12 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # without it public headers won't get installed
-set(public_headers
-    include/command.hpp
+set(PUBLIC_HEADERS
+    include/cpp-commander.h
 )
 
-# note that ${public_headers} has to be in quotes
-set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${public_headers}")
+# note that ${PUBLIC_HEADERS} has to be in quotes
+set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${PUBLIC_HEADERS}")
 
 # not for MSVC
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -50,6 +50,13 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     # treat warnings as errors
     target_compile_options(${PROJECT_NAME} PRIVATE -Werror)
 endif()
+
+# Install the library and headers
+install(TARGETS ${PROJECT_NAME}
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+)
 
 # where to find our CMake modules
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

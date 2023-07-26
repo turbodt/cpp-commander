@@ -38,19 +38,17 @@ As example:
 
 
 ```cpp
-#include "command.hpp"
+#include "cpp-commander.h"
 
 class BaseCommand : public Commander::Command {
 public:
   using Commander::Command::Command;
 
-protected:
-
-  BaseCommand *initialize_wrapper() {
+  void initialize() {
     this->add("-h, --help", "Shows help.");
-    this->Commander::Command::initialize_wrapper();
-    return this;
   }
+
+protected:
 
   int execute_wrapper(Commander::ArgumentList *list) const {
     if (this->get_option("--help")->has_appeared()) {
@@ -73,6 +71,7 @@ public:
   using BaseCommand::BaseCommand;
 
   void initialize() {
+    this->BaseCommand::initialize();
     this->set_description("This the definition of the command.")
         ->add("-m, --message <message>", "This is an option.")
         ->add("--debug", "This is an option without parameter.")
@@ -129,6 +128,12 @@ int main(int argc, char *argv[]) {
   auto command = MainCommand();
   return command.from_main(argc, argv);
 }
+```
+
+or
+
+```cpp
+command.from_line("myprogram -h");
 ```
 
 ### Other
