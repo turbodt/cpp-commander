@@ -71,6 +71,7 @@ public:
     Command *parse_arguments(ArgumentList *);
     virtual int execute() const;
     int from_main(int argc, char *argv[]);
+    int from_line(std::string const &);
 
 protected:
     // members

@@ -189,4 +189,21 @@ int Command::from_main(int argc, char *argv[]) {
     return error;
 }
 
+int Command::from_line(std::string const &line) {
+    std::istringstream iss(line);
+
+    std::vector<std::string> arguments(
+        (std::istream_iterator<std::string>(iss)),
+        std::istream_iterator<std::string>()
+    );
+
+    this->initialize_wrapper();
+    auto argument_list = new ArgumentList(arguments);
+
+    int error = this->parse_arguments_and_execute(argument_list);
+
+    delete argument_list;
+    return error;
+}
+
 } // namespace Commander
