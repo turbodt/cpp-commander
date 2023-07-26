@@ -18,7 +18,7 @@
 
 namespace Commander {
 
-class Command : public Descriptable {
+class Command : virtual public Descriptable {
 public:
     Command();
     Command(std::string const &description);

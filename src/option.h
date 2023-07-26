@@ -13,7 +13,7 @@
 
 namespace Commander {
 
-class Option : public Descriptable {
+class Option : virtual public Descriptable {
 public:
     Option(std::string const &);
     Option(std::string const &, std::string const &);

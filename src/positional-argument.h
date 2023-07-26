@@ -8,7 +8,7 @@
 
 namespace Commander {
 
-class PositionalArgument : public Descriptable {
+class PositionalArgument : virtual public Descriptable {
 public:
     static const std::string label_regex_str;
     static const std::regex label_regex;
@@ -24,6 +24,7 @@ public:
 
     PositionalArgument *set_value(std::string const &);
     PositionalArgument *set_optional(bool);
+    PositionalArgument *set_description(std::string const &);
 
     static bool is_positional_argument_label(std::string const &);
 

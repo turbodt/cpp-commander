@@ -9,6 +9,8 @@ class Descriptable {
 public:
     Descriptable();
     Descriptable(std::string const &);
+    virtual ~Descriptable() = default;
+
     std::string const &get_description() const;
     Descriptable *set_description(std::string const &);
 

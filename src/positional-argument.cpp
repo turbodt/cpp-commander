@@ -80,6 +80,13 @@ PositionalArgument *PositionalArgument::set_value(std::string const &value) {
     return this;
 }
 
+PositionalArgument *PositionalArgument::set_description(
+    std::string const &description
+) {
+    this->Descriptable::set_description(description);
+    return this;
+}
+
 PositionalArgument *PositionalArgument::set_optional(bool value) {
     this->optional = value;
     return this;
