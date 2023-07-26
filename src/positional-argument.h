@@ -4,7 +4,7 @@
 #include <iostream>
 #include <regex>
 
-#include "./descriptable.hpp"
+#include "./descriptable.h"
 
 namespace Commander {
 

@@ -1,4 +1,4 @@
-#include "../include/command.hpp"
+#include "./command.h"
 
 namespace Commander {
 

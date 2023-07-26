@@ -1,4 +1,4 @@
-#include "../include/positional-argument.hpp"
+#include "./positional-argument.h"
 
 namespace Commander {
 

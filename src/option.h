@@ -6,10 +6,10 @@
 #include <sstream>
 #include <vector>
 
-#include "./argument-list.hpp"
-#include "./descriptable.hpp"
-#include "./exceptions.hpp"
-#include "./positional-argument.hpp"
+#include "./argument-list.h"
+#include "./descriptable.h"
+#include "./exceptions.h"
+#include "./positional-argument.h"
 
 namespace Commander {
 
