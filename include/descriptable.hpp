@@ -6,16 +6,14 @@
 namespace Commander {
 
 class Descriptable {
-protected:
-  std::string description;
-
 public:
-  Descriptable();
-  Descriptable(std::string const &description);
-  // setters
-  Descriptable *set_description(std::string const &description);
-  // getters
-  std::string const &get_description() const;
+    Descriptable();
+    Descriptable(std::string const &);
+    std::string const &get_description() const;
+    Descriptable *set_description(std::string const &);
+
+protected:
+    std::string description;
 };
 
 } // namespace Commander
